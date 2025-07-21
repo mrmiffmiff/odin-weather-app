@@ -1,4 +1,5 @@
 import { getWeather } from "./apiCall";
+import { loadIcon } from "./loadIcon";
 
 const unitArea = document.querySelector("#currentUnit");
 const dataArea = document.querySelector("#dataArea");
@@ -21,10 +22,18 @@ async function displayWeather(location) {
         cond.classList.add('weatherText');
         cond.id = 'conditionsText';
         cond.innerText = `Conditions: ${data.conditions}`;
+        const iconUrl = await loadIcon(data.icon);
         dataArea.innerHTML = '';
         dataArea.appendChild(header);
         dataArea.appendChild(temp);
         dataArea.appendChild(cond);
+        if (iconUrl) {
+            const iconImg = document.createElement("img");
+            iconImg.src = iconUrl;
+            iconImg.alt = data.conditions;
+            iconImg.id = "weatherIcon";
+            dataArea.appendChild(iconImg);
+        }
     }
     catch (e) {
         dataArea.innerHTML = `<p>There was an error, see message: ${e.message}. Please try again.<p>`;
