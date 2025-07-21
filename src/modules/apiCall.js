@@ -6,6 +6,9 @@ async function getWeather(queryString, unitGroup) {
     let weatherURL = new URL(`${baseURLString}${baseQuery}?unitGroup=${unitGroup}&include=current&key=${API_KEY}&contentType=json`);
     try {
         const weatherPromise = await fetch(weatherURL, { mode: "cors" });
+        if (weatherPromise.status === 400) {
+            throw new Error("Probably a bad request");
+        }
         const weatherJSON = await weatherPromise.json();
         const weatherData = {
             "location": weatherJSON.resolvedAddress,
@@ -15,8 +18,8 @@ async function getWeather(queryString, unitGroup) {
         }
         return weatherData;
     }
-    catch {
-        throw new Error("Errors somewhere in the API calls");
+    catch (e) {
+        throw new Error("Errors somewhere in the API calls: " + e.message);
     }
 }
 
