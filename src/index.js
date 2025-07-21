@@ -14,16 +14,6 @@ import "./styles.css";
  * Apparently I can dynamically load some icons?
  * And we need to do something about the time of day... */
 
-import { getWeather } from "./modules/apiCall";
+import { initializeInput } from "./modules/parseInput";
 
-function printWeatherData(location) {
-    const weatherData = getWeather(location, 'us');
-    weatherData.then((data) => {
-        console.log(data.location);
-        console.log(data.temp);
-        console.log(data.conditions);
-        console.log(data.icon);
-    });
-}
-
-window.printWeatherData = printWeatherData;
+initializeInput();
